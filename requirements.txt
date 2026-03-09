@@ -1,3 +1,4 @@
+# --- CORE WEB ---
 flask
 Flask-Session
 werkzeug
@@ -5,20 +6,23 @@ requests
 python-dotenv
 pdfkit
 
+# --- DATA ---
 numpy
 pandas
 scikit-learn
 scipy
 xgboost
 
+# --- NLP ---
 sentence-transformers
 transformers
-torch==2.1.2
+torch==2.10.0
 spacy
-nltk
-
 groq
 google-generativeai
+nltk
 
+# --- FILE PROCESSING ---
 PyMuPDF
 python-docx
+pytesseract
