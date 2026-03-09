@@ -1,0 +1,120 @@
+/* --- Global Theme --- */
+body {
+    background-color: #0b0e14; /* Deep charcoal/black */
+    color: #e1e1e1;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    line-height: 1.6;
+}
+
+/* --- Dashboard Cards --- */
+.dashboard-card {
+    background-color: #151921; /* Dark navy card background */
+    border: 1px solid #2a2f3a;
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    border-color: #0dcaf0; /* Cyan glow on hover */
+    box-shadow: 0 8px 30px rgba(13, 202, 240, 0.15);
+}
+
+/* --- Salary & Score Typography --- */
+.salary-value {
+    font-size: 3.2rem; /* Slightly larger for USD impact */
+    font-weight: 800;
+    color: #ffcc00; /* Sophisticated gold for USD valuation */
+    text-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    letter-spacing: -1px;
+    margin-bottom: 5px;
+}
+
+.score-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #00d4ff; /* Tech blue for score */
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+/* --- Skill Badges --- */
+.badge-skill {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 50px;
+    margin: 4px;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.match {
+    background-color: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.missing {
+    background-color: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+/* --- Interview Coach Chat Window --- */
+.chat-window {
+    background-color: #12151e;
+    border-radius: 12px;
+    height: 480px;
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid #2d334d;
+    scrollbar-width: thin;
+    scrollbar-color: #2d334d #12151e;
+}
+
+.bot-msg {
+    background-color: #1c222d;
+    color: #e1e1e1;
+    padding: 14px 18px;
+    border-radius: 15px 15px 15px 0;
+    margin-bottom: 20px;
+    max-width: 85%;
+    border-left: 4px solid #00d4ff;
+    font-size: 0.95rem;
+}
+
+.user-msg {
+    background-color: #00d4ff;
+    color: #0b0e14;
+    padding: 14px 18px;
+    border-radius: 15px 15px 0 15px;
+    margin-bottom: 20px;
+    max-width: 85%;
+    margin-left: auto;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* --- Form Controls --- */
+.form-control-dark {
+    background-color: #1c222d;
+    border: 1px solid #2d334d;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+.form-control-dark:focus {
+    background-color: #252b3a;
+    border-color: #00d4ff;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+}
+
+/* --- Progress Bar --- */
+.progress-bar {
+    background: linear-gradient(90deg, #00d4ff, #00ff88);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}

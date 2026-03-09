@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Career Intelligence Report - {{ role }}</title>
+    <style>
+        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; line-height: 1.5; padding: 20px; }
+        .header { border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 30px; text-align: center; }
+        .header h1 { color: #0056b3; text-transform: uppercase; margin: 0; font-size: 28px; }
+        .header p { margin: 5px 0; color: #666; font-size: 14px; }
+        
+        .section { margin-bottom: 30px; }
+        .section-title { background: #f8f9fa; padding: 10px; border-left: 5px solid #0056b3; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
+        
+        /* Fixed clearfix for PDF rendering */
+        .summary-box { background: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 20px; min-height: 80px; }
+        .summary-item { text-align: center; width: 49%; display: inline-block; vertical-align: top; }
+        .value { font-size: 26px; font-weight: bold; color: #0056b3; display: block; }
+        .label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; font-size: 13px; }
+        th { background-color: #f1f3f5; color: #495057; text-transform: uppercase; font-size: 11px; }
+        
+        .status-matched { color: #28a745; font-weight: bold; }
+        .status-missing { color: #dc3545; font-weight: bold; }
+
+        .roadmap-grid { width: 100%; margin-top: 10px; }
+        .skill-card {
+            width: 44%; display: inline-block; margin: 2%; border: 1px solid #dee2e6;
+            border-radius: 12px; padding: 15px; background-color: #ffffff;
+            min-height: 160px; vertical-align: top;
+        }
+        .skill-title {
+            color: #0056b3; font-size: 16px; font-weight: bold; margin-bottom: 10px;
+            border-bottom: 2px solid #f1f3f5; padding-bottom: 5px; text-transform: capitalize;
+        }
+
+        .btn-link {
+            display: block; text-align: center; padding: 6px; margin-bottom: 6px;
+            border-radius: 4px; text-decoration: none; font-size: 10px;
+            font-weight: bold; color: #ffffff !important;
+        }
+        .btn-coursera { background-color: #0056D2; }
+        .btn-youtube { background-color: #FF0000; }
+        .btn-docs { background-color: #6c757d; }
+
+        .footer { margin-top: 50px; font-size: 10px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
+        .verification-tag { font-style: italic; color: #0056b3; font-weight: bold; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Career Intelligence Report</h1>
+        <p>Target Role: <strong>{{ role }}</strong> | Region: {{ state }}</p>
+        <p>Analysis Timestamp: <strong>{{ date }}</strong></p>
+    </div>
+
+    <div class="summary-box">
+        <div class="summary-item">
+            <span class="label">Market Valuation</span>
+            <span class="value">${{ salary }} LPA</span>
+        </div>
+        <div class="summary-item">
+            <span class="label">Job Readiness</span>
+            <span class="value">{{ score }}%</span>
+            <small style="font-size: 9px; color: #777;">S-BERT Semantic Match</small>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Explainable AI (XAI) Decision Reasoning</div>
+        <p style="font-size: 11px; color: #555; margin-bottom: 10px;">
+             
+            <strong>Semantic Engine:</strong> S-BERT (all-MiniLM-L6-v2)
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Target Skill</th>
+                    <th>Acquisition Status</th>
+                    <th>AI Validation Logic</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if explanation.detailed_log %}
+                    {% for log in explanation.detailed_log %}
+                    <tr>
+                        <td><strong>{{ log.skill }}</strong></td>
+                        <td class="{{ 'status-matched' if log.status == 'Matched' else 'status-missing' }}">
+                            {{ log.status }}
+                        </td>
+                        <td>{{ log.reason }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center;">No detailed logs available for this analysis.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section" style="page-break-before: always;">
+        <div class="section-title">Personalized Skill-Gap Roadmap</div>
+        <p style="font-size: 12px; margin-bottom: 15px;">Targeted resources for your identified missing competencies:</p>
+        
+        <div class="roadmap-grid">
+            {% for res in resources %}
+                <div class="skill-card">
+                    <div class="skill-title">{{ res.skill }}</div>
+                    <a href="{{ res.coursera }}" class="btn-link btn-coursera">🎓 Coursera Certification</a>
+                    <a href="{{ res.youtube }}" class="btn-link btn-youtube">📺 Video Masterclass</a>
+                    <a href="{{ res.doc }}" class="btn-link btn-docs">📄 Technical Docs</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>This document is an automated analysis generated by the  Career Platform .</p>
+        <p>&copy; 2026 Career Intelligence Engine. All Rights Reserved.</p>
+    </div>
+
+</body>
+</html>

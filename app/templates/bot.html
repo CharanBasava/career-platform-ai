@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Coach | Practice Session</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { background-color: #0b0e14; color: #e1e1e1; font-family: 'Inter', sans-serif; }
+        .chat-window { height: 500px; overflow-y: auto; background: #12151e; border: 1px solid #2a2f3a; border-radius: 16px; scrollbar-width: thin; }
+        .bot-msg { background: #1c222d; border-left: 4px solid #00d4ff; padding: 15px; margin-bottom: 20px; border-radius: 0 15px 15px 15px; }
+        .user-msg { background: #00d4ff; color: #0b0e14; padding: 12px 18px; border-radius: 15px 15px 0 15px; margin-bottom: 20px; max-width: 80%; margin-left: auto; font-weight: 500; }
+        #userInput { background: #1c222d; border: 1px solid #2d334d; color: white; border-radius: 12px; }
+        #userInput:focus { border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); }
+        .chat-window pre { background: #000; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.85rem; }
+    </style>
+</head>
+<body class="py-5">
+
+    <div class="container col-lg-8 col-md-10 animate__animated animate__fadeIn">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-info m-0">🤖 AI Career Coach</h2>
+                <div class="d-flex gap-3 mt-1">
+                    <span class="text-secondary small">Role: <b class="text-white">{{ session.get('role', 'AI Professional') }}</b></span>
+                    <span class="text-secondary small">Valuation: <b class="text-warning">${{ "{:,.0f}".format(session.get('prediction', 0)) }}</b></span>
+                </div>
+            </div>
+            <a href="/dashboard" class="btn btn-outline-light btn-sm rounded-pill px-3">Exit Session</a>
+        </div>
+
+        <div class="mb-4 p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25">
+            <div class="d-flex justify-content-between mb-1 small">
+                <span class="text-secondary">Mode: <b id="currentSkillName" class="text-info">Standard Mock Interview</b></span>
+                <span class="text-secondary">Session: <b id="questionCounter" class="text-info">Live Evaluation</b></span>
+            </div>
+            <div class="progress" style="height: 6px; background-color: #1c222d;">
+                <div id="progressBar" class="progress-bar bg-info" role="progressbar" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="chat-window p-4 shadow-lg mb-4" id="chatWindow">
+            <div class="bot-msg">
+                <b class="text-info">Coach:</b> <br>
+                Welcome to your interview prep! We are targeting your <b>{{ session.get('role') }}</b> goal. 
+                Say "Hi" or ask a question to begin our mock session.
+            </div>
+        </div>
+
+        <div class="input-group mb-2">
+            <button id="micBtn" class="btn btn-outline-danger border-end-0" type="button" onclick="toggleSpeech()" style="border-radius: 12px 0 0 12px;">
+                <i class="fas fa-microphone" id="micIcon"></i>
+            </button>
+            <textarea id="userInput" class="form-control border-start-0 border-end-0" 
+                      placeholder="Type your response or ask for tips..." rows="1"></textarea>
+            <button class="btn btn-info px-4 text-dark fw-bold" type="button" id="sendBtn" onclick="sendMessage()" style="border-radius: 0 12px 12px 0;">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+        </div>
+        <p id="status" class="small text-center text-secondary italic">Press Enter to send message</p>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chatWindow');
+        
+        function scrollToBottom() {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Enter key to send
+        document.getElementById('userInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Speech Recognition Setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+        let isRecording = false;
+
+        if (recognition) {
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.onresult = (event) => {
+                document.getElementById('userInput').value = event.results[0][0].transcript;
+                toggleSpeech(); // Automatically stop after result
+            };
+        }
+
+        function toggleSpeech() {
+            if (!recognition) { alert("Speech support missing in this browser."); return; }
+            if (isRecording) {
+                recognition.stop();
+                document.getElementById('micIcon').classList.remove('fa-beat');
+            } else {
+                recognition.start();
+                document.getElementById('micIcon').classList.add('fa-beat');
+            }
+            isRecording = !isRecording;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // 1. Add User Message to UI
+            const userDiv = document.createElement('div');
+            userDiv.className = "user-msg";
+            userDiv.innerText = message;
+            chatWindow.appendChild(userDiv);
+            
+            input.value = "";
+            scrollToBottom();
+
+            // 2. Add Loading Message
+            const typingId = "typing-" + Date.now();
+            const botDiv = document.createElement('div');
+            botDiv.className = "bot-msg";
+            botDiv.id = typingId;
+            botDiv.innerHTML = `<b class="text-info">Coach:</b> <br> <div class="spinner-border spinner-border-sm text-info" role="status"></div> Thinking...`;
+            chatWindow.appendChild(botDiv);
+            scrollToBottom();
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                
+                // 3. Render Markdown Response
+                document.getElementById(typingId).innerHTML = `<b class="text-info">Coach:</b> <br> ${marked.parse(data.response)}`;
+                scrollToBottom();
+
+            } catch (error) {
+                document.getElementById(typingId).innerHTML = `<b class="text-info">Coach:</b> <br> Apologies, I'm having trouble connecting to my brain. Please try again!`;
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
