@@ -10,6 +10,9 @@ This project is an AI-powered recruitment system that detects **semantic equival
 Unlike traditional keyword-based systems, this approach understands the **context and meaning of skills**, improving matching accuracy and reducing hiring inefficiencies.
 
 ---
+## 🎥 Project Demo
+
+[▶️ Watch Demo Video](./semantic Project-demo.mp4)
 
 ## Problem Statement
 
