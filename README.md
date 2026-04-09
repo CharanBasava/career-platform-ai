@@ -1,4 +1,4 @@
-# Semantic Skill Equivalence Detection System
+# Semantic Skill Matching in Recruitment Systems Using Pretrained Sentence-BERT
 ### Transformer-Based Recruitment Intelligence using Sentence-BERT
 
 ---
