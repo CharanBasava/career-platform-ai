@@ -12,7 +12,11 @@ Unlike traditional keyword-based systems, this approach understands the **contex
 ---
 ## 🎥 Project Demo
 
-[▶️ Watch Demo Video](./semantic-project-demo.mp4)
+
+
+https://github.com/user-attachments/assets/5af5aa6a-77e9-4908-bfda-e1582f97939b
+
+
 
 ## Problem Statement
 
