@@ -12,7 +12,7 @@ Unlike traditional keyword-based systems, this approach understands the **contex
 ---
 ## 🎥 Project Demo
 
-[▶️ Watch Demo Video](./semantic Project-demo.mp4)
+[▶️ Watch Demo Video](./semantic-project-demo.mp4)
 
 ## Problem Statement
 
